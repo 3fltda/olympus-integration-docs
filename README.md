@@ -1,10 +1,10 @@
-# olympus-integration-docs
+# Especificação dos endpoints para comunicação entre serviços externos - CDE
 
-## Especificação dos endpoints para comunicação entre serviços externos
+## 1 - CRIANDO A SESSÃO
 
 O esquema de criação de sessão entre as aplicações irá ocorrer da seguinte forma:
 
-Acessar https://aries.orcafascio.com/sign_in, e ao efetuar o login, será feito o redirecionamento para https://taurus.orcafascio.com.
+Acessar https://aries.orcafascio.com/sign_in, e ao efetuar o login, será feito o redirecionamento para https://taurus.orcafascio.com. No final desse documento tem uma lista de usuários que ja foram criados e podem ser utilizados.
 
 Na home, clicar na aplicação CDE em “Aplicações disponíveis para testar”.
 
@@ -164,7 +164,52 @@ Caso válido, o retorno será o seguinte:
 }
 ```
 
-## Lista de usuários disponiveis para teste
+## 2 - RECEBENDO ATUALIZAÇÕES REALIZADAS PELA EMPRESA
+
+As atualizações realizadas por alterações na empresa serão enviadas para o endpoint informado através de uma requisição `POST` com conteudo em json. As alterações são baseadas em uma empresa que tem uma licença ativa do CDE. Todas as possiveis alterações e seus conteudos serão os seguintes:
+
+> Licença da aplicação CDE criada;
+```json
+{
+  "user_id" : "string",
+  "company_id" : "string",
+  "company_user_id" : "string"
+}
+```
+
+> Usuário criado em uma empresa;
+```json
+{
+  "user_id" : "string",
+  "company_id" : "string",
+  "company_user_id" : "string"
+}
+```
+
+> Usuário removido de uma empresa;
+```json
+{
+  "user_id" : "string",
+  "company_id" : "string",
+  "company_user_id" : "string"
+}
+```
+
+> Cargo de um usuário alterado;
+```json
+{
+  "user_id" : "string",
+  "company_id" : "string",
+  "company_user_id" : "string"
+  "role" : {
+    "id" : "string",
+    "code" : "string"
+  }
+}
+```
+
+
+## LISTA DE USUÁRIOS DISPONÍVEIS PARA TESTE
 
 Senha padrão: ZXDas796611*@abc
 
