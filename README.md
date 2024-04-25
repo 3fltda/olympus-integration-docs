@@ -163,3 +163,28 @@ Caso válido, o retorno será o seguinte:
   }
 }
 ```
+
+## Lista de usuários disponiveis para teste
+
+Senha padrão: ZXDas796611*@abc
+
+- cruz@test.test
+- elliott@test.example
+- melida.schaefer@test.example
+- hassan@test.test
+- pete.macgyver@test.example
+- rosana.leffler@test.test
+- rosie.kerluke@test.test
+- ty@test.test
+- kelvin.heller@test.example
+- sharan.legros@test.test
+- hassie@test.example
+- nick@test.test
+- quintin.lubowitz@test.example
+- wilson@test.test
+- margarett@test.example
+- malka.rogahn@test.test
+- junior@test.test
+- hong.stehr@test.example
+- sean.kilback@test.example
+- les.schulist@test.test
