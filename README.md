@@ -130,13 +130,13 @@ Caso válido, o retorno será o seguinte:
           "company_id": "string",
           "permissions": [
             {
-              "id": "Unknown Type: String",
-              "code": "Unknown Type: String",
-              "description": "Unknown Type: String",
-              "type": "Unknown Type: String",
-              "application_id": "Unknown Type: String",
-              "created_at": "Unknown Type: String",
-              "updated_at": "Unknown Type: String"
+              "id": "string",
+              "code": "string",
+              "description": "string",
+              "type": "string",
+              "application_id": "string",
+              "created_at": "string",
+              "updated_at": "string"
             }
           ],
           "created_at": "string",
@@ -162,13 +162,13 @@ Caso válido, o retorno será o seguinte:
       ],
       "permissions": [
         {
-          "id": "Unknown Type: String",
-          "code": "Unknown Type: String",
-          "description": "Unknown Type: String",
-          "type": "Unknown Type: String",
-          "application_id": "Unknown Type: String",
-          "created_at": "Unknown Type: String",
-          "updated_at": "Unknown Type: String"
+          "id": "string",
+          "code": "string",
+          "description": "string",
+          "type": "string",
+          "application_id": "string",
+          "created_at": "string",
+          "updated_at": "string"
         }
       ],
       "company_user_licenses": [
