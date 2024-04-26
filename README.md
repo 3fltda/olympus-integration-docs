@@ -255,7 +255,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 
 ### Licenças
 
-> Licença da aplicação criada (sincrona);
+#### Licença da aplicação criada (sincrona);
 ```typescript
 {
   "id" : string,
@@ -282,7 +282,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Licença da aplicação atualizada (sincrona);
+#### Licença da aplicação atualizada (sincrona);
 ```typescript
 {
   "id" : string,
@@ -309,7 +309,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Licença da aplicação excluída (assincrona);
+#### Licença da aplicação excluída (assincrona);
 ```typescript
 {
   "id" : string,
@@ -322,7 +322,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 
 ### Empresas
 
-> Empresa atualizada (assincrona);
+#### Empresa atualizada (assincrona);
 ```typescript
 {
   "id" : string,
@@ -344,7 +344,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 
 ### Usuários
 
-> Usuário criado em uma empresa (assincrona);
+#### Usuário criado em uma empresa (assincrona);
 ```typescript
 {
   "id" : string,
@@ -379,7 +379,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Usuário atualizado em uma empresa (assincrona);
+#### Usuário atualizado em uma empresa (assincrona);
 ```typescript
 {
   "id" : string,
@@ -414,7 +414,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Usuário excluido de uma empresa (assincrona);
+#### Usuário excluido de uma empresa (assincrona);
 ```typescript
 {
   "id" : string,
@@ -427,7 +427,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 
 ### Setores
 
-> Setor criado (assincrona);
+#### Setor criado (assincrona);
 ```typescript
 {
   "id" : string,
@@ -442,7 +442,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Setor atualizado (assincrona);
+#### Setor atualizado (assincrona);
 ```typescript
 {
   "id" : string,
@@ -457,7 +457,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Setor excluido (assincrona);
+#### Setor excluido (assincrona);
 ```typescript
 {
   "id" : string,
@@ -468,7 +468,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Usuario adicionado em um setor (assincrona);
+#### Usuario adicionado em um setor (assincrona);
 ```typescript
 {
   "id" : string,
@@ -510,7 +510,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Usuario atualizado em um setor (assincrona);
+#### Usuario atualizado em um setor (assincrona);
 ```typescript
 {
   "id" : string,
@@ -552,7 +552,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Usuario excluido de um setor (assincrona);
+#### Usuario excluido de um setor (assincrona);
 ```typescript
 {
   "id" : string,
@@ -568,7 +568,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 
 ### Permissões
 
-> Permissão de acesso criada (assincrona);
+#### Permissão de acesso criada (assincrona);
 ```typescript
 {
   "id" : string,
@@ -589,7 +589,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Permissão de acesso atualizada (assincrona);
+#### Permissão de acesso atualizada (assincrona);
 ```typescript
 {
   "id" : string,
@@ -610,7 +610,7 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 }
 ```
 
-> Permissão de acesso excluida (assincrona);
+#### Permissão de acesso excluida (assincrona);
 ```typescript
 {
   "id" : string,
