@@ -4,7 +4,7 @@
 
 O esquema de criação de sessão entre as aplicações irá ocorrer da seguinte forma:
 
-Acessar https://aries.orcafascio.com/sign_in, e ao efetuar o login, será feito o redirecionamento para https://taurus.orcafascio.com. No final desse documento tem uma lista de usuários que ja foram criados e podem ser utilizados.
+Acessar https://aries.orcafascio.com/sign_in e efetuar o login. No final desse documento tem uma lista de usuários que ja foram criados e podem ser utilizados.
 
 Na home, clicar na aplicação CDE em “Aplicações disponíveis para testar”.
 
@@ -163,6 +163,7 @@ Caso válido, o retorno será o seguinte:
   }
 }
 ```
+Em ambas as requisições devera ser enviado no header em `Authorization` o token definido para sua aplicação (fazer a solicitação do mesmo).
 
 ## 2 - RECEBENDO ATUALIZAÇÕES REALIZADAS PELA EMPRESA
 
@@ -171,6 +172,17 @@ As atualizações realizadas por alterações na empresa serão enviadas para o 
 > Licença da aplicação CDE criada;
 ```json
 {
+  "code" : "license_created",
+  "user_id" : "string",
+  "company_id" : "string",
+  "company_user_id" : "string"
+}
+```
+
+> Licença da aplicação CDE removida;
+```json
+{
+  "code" : "license_removed",
   "user_id" : "string",
   "company_id" : "string",
   "company_user_id" : "string"
@@ -180,6 +192,17 @@ As atualizações realizadas por alterações na empresa serão enviadas para o 
 > Usuário criado em uma empresa;
 ```json
 {
+  "code" : "user_created",
+  "user_id" : "string",
+  "company_id" : "string",
+  "company_user_id" : "string"
+}
+```
+
+> Usuário atualizado em uma empresa;
+```json
+{
+  "code" : "user_updated",
   "user_id" : "string",
   "company_id" : "string",
   "company_user_id" : "string"
@@ -189,6 +212,7 @@ As atualizações realizadas por alterações na empresa serão enviadas para o 
 > Usuário removido de uma empresa;
 ```json
 {
+  "code" : "user_removed",
   "user_id" : "string",
   "company_id" : "string",
   "company_user_id" : "string"
@@ -198,6 +222,7 @@ As atualizações realizadas por alterações na empresa serão enviadas para o 
 > Cargo de um usuário alterado;
 ```json
 {
+  "code" : "user_role_updated",
   "user_id" : "string",
   "company_id" : "string",
   "company_user_id" : "string"
