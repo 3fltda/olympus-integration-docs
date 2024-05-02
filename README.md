@@ -22,12 +22,12 @@ Junto a url será acrescentado um token temporário que deverá ser recebido pel
 
 O token tem uma expiração de 30 segundos. A ação `auth` é configurável portanto deverá informar qual ação será responsável por receber o token na sua aplicação.
 
-Ao receber o token em seu backend, é necessário validar o mesmo enviando ele em uma requisição `PATCH` para https://charon.orcafascio.com/api/v1/remotes/customers/external_sessions com o seguinte conteudo em application/json:
+Ao receber o token em seu backend, é necessário validar o mesmo enviando ele em uma requisição `PATCH` para o endpoint com o seguinte conteudo em application/json:
 
 ```
-PATCH https://charon.orcafascio.com/api/v1/remotes/customers/external_sessions
+PATCH https://olympus-charon-web-staging.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
 Content-Type: application/json
-Authorization: <application-token>
+Remote-Authorization: <application-token>
 
 {
   "token": "string"
@@ -39,8 +39,18 @@ Caso o token seja valido, a resposta sera a seguinte:
 ```json
 {
   "session": {
-    "public_token": "string",
+    "id": "string",
+    "token": "string",
     "metadata": {},
+    "user": {
+      "id": "string",
+      "email": "string",
+      "country_code": "string",
+      "phone": "string",
+      "name": "string",
+      "provider": "string",
+      "role_id": "string"
+    },
     "created_at": "string",
     "updated_at": "string"
   }
@@ -49,16 +59,13 @@ Caso o token seja valido, a resposta sera a seguinte:
 
 Feito isso, a sessão entre as aplicações esta estabelecida, sendo que o `public_token` devera ser enviado para cada requisição feita para os serviços internos, para poder reconhecer o usuario na sessão atual.
 
-Para consultar se o token é valido e recuperar dados da sessão do usuário, pode ser enviado uma requisição `PATCH` para https://charon.orcafascio.com/api/v1/remotes/customers/sessions fornecendo o `public_token`:
+Para consultar se o token é valido e recuperar dados da sessão do usuário, pode ser enviado uma requisição `PATCH` para o seguinte endpoint fornecendo o `token` obtido:
 
 ```
-PATCH https://charon.orcafascio.com/api/v1/remotes/customers/sessions
+GET https://olympus-charon-web-staging.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
 Content-Type: application/json
-Authorization: <application-token>
-
-{
-  "token": "public_token"
-}
+Authorization: <token>
+Remote-Authorization: <application-token>
 ```
 
 Caso válido, o retorno será o seguinte:
@@ -122,7 +129,7 @@ Caso válido, o retorno será o seguinte:
       "custom_roles": [
         {
           "id": "string",
-          "is_system": "string",
+          "is_system": true,
           "code": "string",
           "name": "string",
           "pluralized_name": "string",
@@ -204,6 +211,21 @@ Caso válido, o retorno será o seguinte:
             "approver_id": "string",
             "approver_code": "string",
             "user_id": "string",
+            "application_addons": {
+              "allow_ifc_format": true,
+              "allow_nwd_format": true,
+              "allow_rvt_format": true,
+              "allow_dxf_format": true,
+              "allow_dwg_format": true,
+              "allow_pdf_format": true,
+              "allow_manage_point_clouds": true,
+              "allow_manage_issues": true,
+              "allow_manage_federated": true,
+              "allow_manage_clash": true,
+              "allow_manage_file_delivery": true,
+              "revit_credit_amount": 0,
+              "storage_amount": 0
+            },
             "created_at": "string",
             "updated_at": "string"
           },
@@ -245,6 +267,12 @@ Caso válido, o retorno será o seguinte:
 }
 ```
 
+Os ambientes serão `production` e `staging`, conforme as seguintes urls:
+```
+STAGING_URL=https://olympus-charon-web-staging.jelastic.saveincloud.net
+PRODUCTION_URL=https://olympus-charon-web.jelastic.saveincloud.net
+```
+
 ## 2 - RECEBENDO ATUALIZAÇÕES REALIZADAS PELA EMPRESA
 
 As atualizações realizadas por alterações na empresa serão enviadas para o endpoint informado através de uma requisição `POST` com o conteudo em json. As alterações são baseadas em uma empresa que possui uma licença ativa da aplicação integrada.
@@ -260,24 +288,41 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "license_created",
-  "license" : {
-    "id" : string,
-    "license_kind" : "lifetime" | "test" | "commercial",
-    "starts_at" : string,
-    "ends_at" : string,
-    "paid" : boolean,
-    "users_amount" : number,
-    "expired" : boolean,
-    "approved" : boolean,
-    "approved_at" : string,
-    "application_id" : string,
-    "commercial_condition_id" : string,
-    "company_id" : string,
-    "approver_id" : string,
-    "approver_code" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "license" : {
+      "id" : string,
+      "license_kind" : "lifetime" | "test" | "commercial",
+      "starts_at" : string,
+      "ends_at" : string,
+      "paid" : boolean,
+      "users_amount" : number,
+      "expired" : boolean,
+      "approved" : boolean,
+      "approved_at" : string,
+      "application_id" : string,
+      "commercial_condition_id" : string,
+      "company_id" : string,
+      "approver_id" : string,
+      "approver_code" : string,
+      "user_id" : string,
+      "application_addons" : {
+        "allow_ifc_format" : boolean,
+        "allow_nwd_format" : boolean,
+        "allow_rvt_format" : boolean,
+        "allow_dxf_format" : boolean,
+        "allow_dwg_format" : boolean,
+        "allow_pdf_format" : boolean,
+        "allow_manage_point_clouds" : boolean,
+        "allow_manage_issues" : boolean,
+        "allow_manage_federated" : boolean,
+        "allow_manage_clash" : boolean,
+        "allow_manage_file_delivery" : boolean,
+        "revit_credit_amount" : number,
+        "storage_amount" : number
+      },
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -287,24 +332,41 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "license_updated",
-  "license" : {
-    "id" : string,
-    "license_kind" : "lifetime" | "test" | "commercial",
-    "starts_at" : string,
-    "ends_at" : string,
-    "paid" : boolean,
-    "users_amount" : number,
-    "expired" : boolean,
-    "approved" : boolean,
-    "approved_at" : string,
-    "application_id" : string,
-    "commercial_condition_id" : string,
-    "company_id" : string,
-    "approver_id" : string,
-    "approver_code" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "license" : {
+      "id" : string,
+      "license_kind" : "lifetime" | "test" | "commercial",
+      "starts_at" : string,
+      "ends_at" : string,
+      "paid" : boolean,
+      "users_amount" : number,
+      "expired" : boolean,
+      "approved" : boolean,
+      "approved_at" : string,
+      "application_id" : string,
+      "commercial_condition_id" : string,
+      "company_id" : string,
+      "approver_id" : string,
+      "approver_code" : string,
+      "user_id" : string,
+      "application_addons" : {
+        "allow_ifc_format" : boolean,
+        "allow_nwd_format" : boolean,
+        "allow_rvt_format" : boolean,
+        "allow_dxf_format" : boolean,
+        "allow_dwg_format" : boolean,
+        "allow_pdf_format" : boolean,
+        "allow_manage_point_clouds" : boolean,
+        "allow_manage_issues" : boolean,
+        "allow_manage_federated" : boolean,
+        "allow_manage_clash" : boolean,
+        "allow_manage_file_delivery" : boolean,
+        "revit_credit_amount" : number,
+        "storage_amount" : number
+      },
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -314,8 +376,41 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "license_destroyed",
-  "license" : {
-    "id" : string
+  "data" : {
+    "license" : {
+      "id" : string,
+      "license_kind" : "lifetime" | "test" | "commercial",
+      "starts_at" : string,
+      "ends_at" : string,
+      "paid" : boolean,
+      "users_amount" : number,
+      "expired" : boolean,
+      "approved" : boolean,
+      "approved_at" : string,
+      "application_id" : string,
+      "commercial_condition_id" : string,
+      "company_id" : string,
+      "approver_id" : string,
+      "approver_code" : string,
+      "user_id" : string,
+      "application_addons" : {
+        "allow_ifc_format" : boolean,
+        "allow_nwd_format" : boolean,
+        "allow_rvt_format" : boolean,
+        "allow_dxf_format" : boolean,
+        "allow_dwg_format" : boolean,
+        "allow_pdf_format" : boolean,
+        "allow_manage_point_clouds" : boolean,
+        "allow_manage_issues" : boolean,
+        "allow_manage_federated" : boolean,
+        "allow_manage_clash" : boolean,
+        "allow_manage_file_delivery" : boolean,
+        "revit_credit_amount" : number,
+        "storage_amount" : number
+      },
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -327,17 +422,19 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_updated",
-  "company" : {
-    "id" : string,
-    "code" : string,
-    "name" : string,
-    "trade_name" : string,
-    "kind" : string,
-    "deleted" : boolean,
-    "deleted_at" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "company" : {
+      "id" : string,
+      "code" : string,
+      "name" : string,
+      "trade_name" : string,
+      "kind" : string,
+      "deleted" : boolean,
+      "deleted_at" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -349,31 +446,33 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_user_created",
-  "company_user" : {
-    "id" : string,
-    "accepted_invitation" : boolean,
-    "accepted_invitation_at" : string,
-    "email" : string,
-    "country_code" : string,
-    "phone" : string,
-    "name" : string,
-    "personal_code" : string,
-    "business_code" : string,
-    "identification" : string,
-    "job" : string,
-    "enabled_login" : boolean,
-    "role_id" : string,
-    "company_id" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string,
-    "general_role" : {
+  "data" : {
+    "company_user" : {
       "id" : string,
-      "code" : "owner" | "admin" | "collaborator" | "viewer" | "associate" | "guest" | "invited"
-      "type" : string,
-      "description" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
       "created_at" : string,
-      "updated_at" : string
+      "updated_at" : string,
+      "general_role" : {
+        "id" : string,
+        "code" : "owner" | "admin" | "collaborator" | "viewer" | "associate" | "guest" | "invited"
+        "type" : string,
+        "description" : string,
+        "created_at" : string,
+        "updated_at" : string
+      }
     }
   }
 }
@@ -384,31 +483,33 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_user_updated",
-  "company_user" : {
-    "id" : string,
-    "accepted_invitation" : boolean,
-    "accepted_invitation_at" : string,
-    "email" : string,
-    "country_code" : string,
-    "phone" : string,
-    "name" : string,
-    "personal_code" : string,
-    "business_code" : string,
-    "identification" : string,
-    "job" : string,
-    "enabled_login" : boolean,
-    "role_id" : string,
-    "company_id" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string,
-    "general_role" : {
+  "data" : {
+    "company_user" : {
       "id" : string,
-      "code" : "owner" | "admin" | "collaborator" | "viewer" | "associate" | "guest" | "invited"
-      "type" : string,
-      "description" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
       "created_at" : string,
-      "updated_at" : string
+      "updated_at" : string,
+      "general_role" : {
+        "id" : string,
+        "code" : "owner" | "admin" | "collaborator" | "viewer" | "associate" | "guest" | "invited"
+        "type" : string,
+        "description" : string,
+        "created_at" : string,
+        "updated_at" : string
+      }
     }
   }
 }
@@ -419,8 +520,34 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_user_destroyed",
-  "company_user" : {
-    "id" : string
+  "data" : {
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string,
+      "general_role" : {
+        "id" : string,
+        "code" : "owner" | "admin" | "collaborator" | "viewer" | "associate" | "guest" | "invited"
+        "type" : string,
+        "description" : string,
+        "created_at" : string,
+        "updated_at" : string
+      }
+    }
   }
 }
 ```
@@ -432,12 +559,14 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "group_created",
-  "group" : {
-    "id" : string,
-    "name" : string,
-    "company_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "group" : {
+      "id" : string,
+      "name" : string,
+      "company_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -447,12 +576,14 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "group_updated",
-  "group" : {
-    "id" : string,
-    "name" : string,
-    "company_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "group" : {
+      "id" : string,
+      "name" : string,
+      "company_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -462,8 +593,14 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "group_destroyed",
-  "group" : {
-    "id" : string
+  "data" : {
+    "group" : {
+      "id" : string,
+      "name" : string,
+      "company_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -473,39 +610,41 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_user_group_created",
-  "group" : {
-    "id" : string,
-    "name" : string,
-    "company_id" : string,
-    "created_at" : string,
-    "updated_at" : string
-  },
-  "company_user" : {
-    "id" : string,
-    "accepted_invitation" : boolean,
-    "accepted_invitation_at" : string,
-    "email" : string,
-    "country_code" : string,
-    "phone" : string,
-    "name" : string,
-    "personal_code" : string,
-    "business_code" : string,
-    "identification" : string,
-    "job" : string,
-    "enabled_login" : boolean,
-    "role_id" : string,
-    "company_id" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string
-  },
-  "group_role" : {
-    "id" : string,
-    "code" : "admin" | "collaborator"
-    "type" : string,
-    "description" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "group" : {
+      "id" : string,
+      "name" : string,
+      "company_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "group_role" : {
+      "id" : string,
+      "code" : "admin" | "collaborator"
+      "type" : string,
+      "description" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -515,39 +654,41 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_user_group_updated",
-  "group" : {
-    "id" : string,
-    "name" : string,
-    "company_id" : string,
-    "created_at" : string,
-    "updated_at" : string
-  },
-  "company_user" : {
-    "id" : string,
-    "accepted_invitation" : boolean,
-    "accepted_invitation_at" : string,
-    "email" : string,
-    "country_code" : string,
-    "phone" : string,
-    "name" : string,
-    "personal_code" : string,
-    "business_code" : string,
-    "identification" : string,
-    "job" : string,
-    "enabled_login" : boolean,
-    "role_id" : string,
-    "company_id" : string,
-    "user_id" : string,
-    "created_at" : string,
-    "updated_at" : string
-  },
-  "group_role" : {
-    "id" : string,
-    "code" : "admin" | "collaborator"
-    "type" : string,
-    "description" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "group" : {
+      "id" : string,
+      "name" : string,
+      "company_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "group_role" : {
+      "id" : string,
+      "code" : "admin" | "collaborator"
+      "type" : string,
+      "description" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -557,11 +698,41 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "company_user_group_destroyed",
-  "group" : {
-    "id" : string
-  },
-  "company_user" : {
-    "id" : string
+  "data" : {
+    "group" : {
+      "id" : string,
+      "name" : string,
+      "company_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "group_role" : {
+      "id" : string,
+      "code" : "admin" | "collaborator"
+      "type" : string,
+      "description" : string,
+      "created_at" : string,
+      "updated_at" : string
+    }
   }
 }
 ```
@@ -573,18 +744,73 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "application_access_created",
-  "application_access" : {
-    "id" : string,
-    "grantee_code" : string,
-    "self_content" : number,
-    "same_group_content" : number,
-    "other_group_content" : number,
-    "company_id" : string,
-    "company_user_id" : string,
-    "grantee_id" : string,
-    "application_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "application_access" : {
+      "id" : string,
+      "grantee_code" : string,
+      "self_content" : number,
+      "same_group_content" : number,
+      "other_group_content" : number,
+      "company_id" : string,
+      "company_user_id" : string,
+      "grantee_id" : string,
+      "application_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "license" : {
+      "id" : string,
+      "license_kind" : "lifetime" | "test" | "commercial",
+      "starts_at" : string,
+      "ends_at" : string,
+      "paid" : boolean,
+      "users_amount" : number,
+      "expired" : boolean,
+      "approved" : boolean,
+      "approved_at" : string,
+      "application_id" : string,
+      "commercial_condition_id" : string,
+      "company_id" : string,
+      "approver_id" : string,
+      "approver_code" : string,
+      "user_id" : string,
+      "application_addons" : {
+        "allow_ifc_format" : boolean,
+        "allow_nwd_format" : boolean,
+        "allow_rvt_format" : boolean,
+        "allow_dxf_format" : boolean,
+        "allow_dwg_format" : boolean,
+        "allow_pdf_format" : boolean,
+        "allow_manage_point_clouds" : boolean,
+        "allow_manage_issues" : boolean,
+        "allow_manage_federated" : boolean,
+        "allow_manage_clash" : boolean,
+        "allow_manage_file_delivery" : boolean,
+        "revit_credit_amount" : number,
+        "storage_amount" : number
+      },
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
   }
 }
 ```
@@ -594,18 +820,73 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "application_access_updated",
-  "application_access" : {
-    "id" : string,
-    "grantee_code" : string,
-    "self_content" : number,
-    "same_group_content" : number,
-    "other_group_content" : number,
-    "company_id" : string,
-    "company_user_id" : string,
-    "grantee_id" : string,
-    "application_id" : string,
-    "created_at" : string,
-    "updated_at" : string
+  "data" : {
+    "application_access" : {
+      "id" : string,
+      "grantee_code" : string,
+      "self_content" : number,
+      "same_group_content" : number,
+      "other_group_content" : number,
+      "company_id" : string,
+      "company_user_id" : string,
+      "grantee_id" : string,
+      "application_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "license" : {
+      "id" : string,
+      "license_kind" : "lifetime" | "test" | "commercial",
+      "starts_at" : string,
+      "ends_at" : string,
+      "paid" : boolean,
+      "users_amount" : number,
+      "expired" : boolean,
+      "approved" : boolean,
+      "approved_at" : string,
+      "application_id" : string,
+      "commercial_condition_id" : string,
+      "company_id" : string,
+      "approver_id" : string,
+      "approver_code" : string,
+      "user_id" : string,
+      "application_addons" : {
+        "allow_ifc_format" : boolean,
+        "allow_nwd_format" : boolean,
+        "allow_rvt_format" : boolean,
+        "allow_dxf_format" : boolean,
+        "allow_dwg_format" : boolean,
+        "allow_pdf_format" : boolean,
+        "allow_manage_point_clouds" : boolean,
+        "allow_manage_issues" : boolean,
+        "allow_manage_federated" : boolean,
+        "allow_manage_clash" : boolean,
+        "allow_manage_file_delivery" : boolean,
+        "revit_credit_amount" : number,
+        "storage_amount" : number
+      },
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
   }
 }
 ```
@@ -615,8 +896,73 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 {
   "id" : string,
   "code" : "application_access_destroyed",
-  "application_access" : {
-    "id" : string
+  "data" : {
+    "application_access" : {
+      "id" : string,
+      "grantee_code" : string,
+      "self_content" : number,
+      "same_group_content" : number,
+      "other_group_content" : number,
+      "company_id" : string,
+      "company_user_id" : string,
+      "grantee_id" : string,
+      "application_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "license" : {
+      "id" : string,
+      "license_kind" : "lifetime" | "test" | "commercial",
+      "starts_at" : string,
+      "ends_at" : string,
+      "paid" : boolean,
+      "users_amount" : number,
+      "expired" : boolean,
+      "approved" : boolean,
+      "approved_at" : string,
+      "application_id" : string,
+      "commercial_condition_id" : string,
+      "company_id" : string,
+      "approver_id" : string,
+      "approver_code" : string,
+      "user_id" : string,
+      "application_addons" : {
+        "allow_ifc_format" : boolean,
+        "allow_nwd_format" : boolean,
+        "allow_rvt_format" : boolean,
+        "allow_dxf_format" : boolean,
+        "allow_dwg_format" : boolean,
+        "allow_pdf_format" : boolean,
+        "allow_manage_point_clouds" : boolean,
+        "allow_manage_issues" : boolean,
+        "allow_manage_federated" : boolean,
+        "allow_manage_clash" : boolean,
+        "allow_manage_file_delivery" : boolean,
+        "revit_credit_amount" : number,
+        "storage_amount" : number
+      },
+      "created_at" : string,
+      "updated_at" : string
+    },
+    "company_user" : {
+      "id" : string,
+      "accepted_invitation" : boolean,
+      "accepted_invitation_at" : string,
+      "email" : string,
+      "country_code" : string,
+      "phone" : string,
+      "name" : string,
+      "personal_code" : string,
+      "business_code" : string,
+      "identification" : string,
+      "job" : string,
+      "enabled_login" : boolean,
+      "role_id" : string,
+      "company_id" : string,
+      "user_id" : string,
+      "created_at" : string,
+      "updated_at" : string
+    },
   }
 }
 ```
