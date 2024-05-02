@@ -59,7 +59,7 @@ Caso o token seja valido, a resposta sera a seguinte:
 
 Feito isso, a sessão entre as aplicações esta estabelecida, sendo que o `public_token` devera ser enviado para cada requisição feita para os serviços internos, para poder reconhecer o usuario na sessão atual.
 
-Para consultar se o token é valido e recuperar dados da sessão do usuário, pode ser enviado uma requisição `PATCH` para o seguinte endpoint fornecendo o `token` obtido:
+Para consultar se o token é valido e recuperar dados da sessão do usuário, pode ser enviado uma requisição `GET` para o seguinte endpoint fornecendo o `token` obtido:
 
 ```
 GET https://olympus-charon-web-staging.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
