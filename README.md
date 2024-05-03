@@ -969,25 +969,35 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
 
 ## LISTA DE USUÁRIOS DISPONÍVEIS PARA TESTE
 
-Senha padrão: ZXDas796611*@abc
+Senha padrão: ZXD89abcde@*
 
-- cruz@test.test
-- elliott@test.example
-- melida.schaefer@test.example
-- hassan@test.test
-- pete.macgyver@test.example
-- rosana.leffler@test.test
-- rosie.kerluke@test.test
-- ty@test.test
-- kelvin.heller@test.example
-- sharan.legros@test.test
-- hassie@test.example
-- nick@test.test
-- quintin.lubowitz@test.example
-- wilson@test.test
-- margarett@test.example
-- malka.rogahn@test.test
-- junior@test.test
-- hong.stehr@test.example
-- sean.kilback@test.example
-- les.schulist@test.test
+- marietta.raynor@test.test
+- mandi@test.test
+- sherill.nitzsche@test.test
+- alvera.will@test.test
+- mauro@test.example
+- maurine@test.test
+- rory@test.example
+- francisco@test.test
+- ailene@test.test
+- leta.oreilly@test.test
+- stanton@test.test
+- brock@test.example
+- adolfo.schaefer@test.test
+- everett@test.example
+- michel.conroy@test.example
+- valorie@test.example
+- nevada.balistreri@test.example
+- marisa@test.example
+- yoshie@test.test
+- rosanne.bernier@test.example
+- rosemary.raynor@test.example
+- verona.schaefer@test.example
+- derek@test.test
+- roberto.nikolaus@test.example
+- antonio.mckenzie@test.example
+- santos.robel@test.test
+- celesta@test.test
+- cicely@test.test
+- benedict@test.example
+- rudy@test.test
