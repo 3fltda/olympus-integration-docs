@@ -4,7 +4,7 @@
 
 O esquema de criação de sessão entre as aplicações irá ocorrer da seguinte forma:
 
-Acessar https://aries.orcafascio.com/sign_in e efetuar o login. No final desse documento tem uma lista de usuários que ja foram criados e podem ser utilizados.
+Acessar https://aries.orcafascio.com/sign_in e efetuar o login ou cadastro.
 
 Na home, clicar na aplicação integrada em “Aplicações disponíveis para testar”.
 
@@ -25,7 +25,7 @@ O token tem uma expiração de 30 segundos. A ação `auth` é configurável por
 Ao receber o token em seu backend, é necessário validar o mesmo enviando ele em uma requisição `PATCH` para o endpoint com o seguinte conteudo em application/json:
 
 ```
-PATCH https://olympus-charon-web-staging.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
+PATCH https://olympus-charon-web-stg.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
 Content-Type: application/json
 Remote-Authorization: <application-token>
 
@@ -62,7 +62,7 @@ Feito isso, a sessão entre as aplicações esta estabelecida, sendo que o `publ
 Para consultar se o token é valido e recuperar dados da sessão do usuário, pode ser enviado uma requisição `GET` para o seguinte endpoint fornecendo o `token` obtido:
 
 ```
-GET https://olympus-charon-web-staging.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
+GET https://olympus-charon-web-stg.jelastic.saveincloud.net/api/v1/remotes/customers/application_sessions
 Content-Type: application/json
 Authorization: <token>
 Remote-Authorization: <application-token>
@@ -269,7 +269,7 @@ Caso válido, o retorno será o seguinte:
 
 Os ambientes serão `production` e `staging`, conforme as seguintes urls:
 ```
-STAGING_URL=https://olympus-charon-web-staging.jelastic.saveincloud.net
+STAGING_URL=https://olympus-charon-web-stg.jelastic.saveincloud.net
 PRODUCTION_URL=https://olympus-charon-web.jelastic.saveincloud.net
 ```
 
@@ -966,38 +966,3 @@ Todas as possiveis alterações e seus conteudos serão os seguintes:
   }
 }
 ```
-
-## LISTA DE USUÁRIOS DISPONÍVEIS PARA TESTE
-
-Senha padrão: ZXD89abcde@*
-
-- ollie@test.example
-- derek.blanda@test.example
-- donald@test.example
-- lulu.jacobi@test.test
-- jenice.schulist@test.test
-- kareen@test.test
-- earl.white@test.example
-- pinkie@test.example
-- avery.wisozk@test.test
-- rashad.towne@test.example
-- adella@test.test
-- dorris@test.test
-- jody@test.example
-- judi.turner@test.example
-- pearly.schulist@test.test
-- hollis@test.test
-- kiana@test.test
-- billie@test.example
-- maryjane.schoen@test.test
-- malcom.bernhard@test.example
-- rod@test.test
-- angie.volkman@test.test
-- walker@test.test
-- russel@test.example
-- harry.kuhic@test.test
-- henry.sanford@test.example
-- eugene.kreiger@test.example
-- jacquetta.rempel@test.example
-- nguyet.doyle@test.example
-- melania@test.example
